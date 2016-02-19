@@ -20,9 +20,11 @@
         </activity>
         <activity
             android:name=".PtrListViewActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".PtrRecyclerViewActivity"
+            android:label="@string/title_activity_ptr_recycler_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

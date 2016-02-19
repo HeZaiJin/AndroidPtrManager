@@ -2,11 +2,14 @@ package com.haozhang.ptr.libary.base;
 
 import android.view.View;
 
+import com.haozhang.ptr.libary.PtrFootView;
+
 /**
  * @author HaoZhang
  * @date 2016/2/17.
  */
-public abstract class PtrBaseManager {
+public abstract class PtrBaseManager<T extends PtrBaseManager> {
+
     /**
      * 拓展scroll listener
      */
@@ -21,26 +24,24 @@ public abstract class PtrBaseManager {
 
     protected PtrListeners.OnFootClickListener onFootClickListener;
 
-    public abstract PtrBaseManager setHeaderView(View view);
+    public abstract T setHeaderView(View view);
 
-    public abstract PtrBaseManager setFooterView(IPtrBaseFooter view);
+    public abstract T setFooterView(IPtrBaseFooter view);
 
-    public abstract PtrBaseManager onLoadMorePrepare();
+    protected abstract T onLoadMorePrepare();
 
-    public abstract PtrBaseManager onLoadMoreBackground();
+    protected abstract T onLoadMoreBackground();
 
-    public abstract PtrBaseManager onLoadMoreCompleted();
+    protected abstract T onLoadMoreCompleted();
 
-    public abstract PtrBaseManager setOnScrollListener(PtrListeners.OnScrollListener listener);
+    public abstract T setOnScrollListener(PtrListeners.OnScrollListener listener);
 
-    public abstract PtrBaseManager setOnLoadMoreListener(PtrListeners.OnLoadMoreListener listener);
+    public abstract T setOnLoadMoreListener(PtrListeners.OnLoadMoreListener listener);
 
-    public abstract PtrBaseManager setOnPtrItemClickListener(PtrListeners.OnItemClickListener listener);
+    public abstract T setOnPtrItemClickListener(PtrListeners.OnItemClickListener listener);
 
-    public abstract PtrBaseManager setOnFootClickListener(PtrListeners.OnFootClickListener listener);
+    public abstract T setOnFootClickListener(PtrListeners.OnFootClickListener listener);
 
-    public abstract PtrBaseManager setMeterialFooterWidth(int width);
-
-    public abstract PtrBaseManager setMeterialFooterColor(int color);
+    public abstract PtrFootView getMeterialFooterView();
 
 }

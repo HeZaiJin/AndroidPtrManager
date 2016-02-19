@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.haozhang.ptr.libary.PtrManager;
 import com.haozhang.ptr.libary.base.PtrListeners;
+import com.haozhang.ptr.libary.manager.PtrListViewManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,32 +61,34 @@ public class PtrListViewActivity extends AppCompatActivity {
         // 如果想多footerview的话，item click需要自己处理position
         listView.addFooterView(iv);
 
-        PtrManager.bind(listView).setOnLoadMoreListener(new PtrListeners.OnLoadMoreListener() {
-            @Override
-            public void onLoadMorePrepared() {
-                Log.d(TAG, "onLoadMorePrepared() called with: " + " is in mainThread ? =" + (Looper.myLooper() == Looper.getMainLooper()));
-            }
-
-            @Override
-            public void onLoadMoreBackground() {
-                Log.d(TAG, "onLoadMoreBackground() called with: " + " is in mainThread ? =" + (Looper.myLooper() == Looper.getMainLooper()));
-                try {
-                    Thread.sleep(5000);
-                    int size = i + 10;
-                    for (; i < size; i++) {
-                        list.add(i);
+        new PtrManager<PtrListViewManager>()
+                .bind(listView).
+                setOnLoadMoreListener(new PtrListeners.OnLoadMoreListener() {
+                    @Override
+                    public void onLoadMorePrepared() {
+                        Log.d(TAG, "onLoadMorePrepared() called with: " + " is in mainThread ? =" + (Looper.myLooper() == Looper.getMainLooper()));
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            @Override
-            public void onLoadMoreCompleted() {
-                Log.d(TAG, "onLoadMoreCompleted() called with: " + " is in mainThread ? =" + (Looper.myLooper() == Looper.getMainLooper()));
-                adapter.notifyDataSetChanged();
-            }
-        })/*.setFooterView(new IPtrBaseFooter() {
+                    @Override
+                    public void onLoadMoreBackground() {
+                        Log.d(TAG, "onLoadMoreBackground() called with: " + " is in mainThread ? =" + (Looper.myLooper() == Looper.getMainLooper()));
+                        try {
+                            Thread.sleep(5000);
+                            int size = i + 10;
+                            for (; i < size; i++) {
+                                list.add(i);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onLoadMoreCompleted() {
+                        Log.d(TAG, "onLoadMoreCompleted() called with: " + " is in mainThread ? =" + (Looper.myLooper() == Looper.getMainLooper()));
+                        adapter.notifyDataSetChanged();
+                    }
+                })/*.setFooterView(new IPtrBaseFooter() {
             @Override
             public View onGetContentView() {
                 return tv;
@@ -117,7 +120,7 @@ public class PtrListViewActivity extends AppCompatActivity {
         }).setOnPtrItemClickListener(new PtrListeners.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemClick position ="+position);
+                Log.d(TAG, "onItemClick position =" + position);
             }
         }).getMeterialFooterView();
 
@@ -128,7 +131,8 @@ public class PtrListViewActivity extends AppCompatActivity {
 
         adapter = new MyAdapter();
 
-            listView.setAdapter(adapter);
+        listView.setAdapter(adapter);
+
 
     }
 
@@ -158,7 +162,7 @@ public class PtrListViewActivity extends AppCompatActivity {
                 convertView = View.inflate(PtrListViewActivity.this, R.layout.item_ptrlistview_demo, null);
             }
             TextView tv = ViewHolder.get(convertView, R.id.test);
-            if (null!=tv){
+            if (null != tv) {
                 tv.setText(String.valueOf(list.get(position)));
             }
             return convertView;

@@ -12,18 +12,14 @@ import com.haozhang.ptr.libary.manager.PtrRecyclerViewManager;
  * @author HaoZhang
  * @date 2016/2/17.
  */
-public class PtrManager {
+public class PtrManager<T extends PtrBaseManager>{
 
-    public static final PtrBaseManager bind(ViewGroup group){
+    public  T bind(ViewGroup group){
         if (group instanceof ListView){
-
-            return new PtrListViewManager((ListView)group);
+            return (T)new PtrListViewManager((ListView)group);
         }else if (group instanceof RecyclerView){
-
-            return new PtrRecyclerViewManager();
+            return (T)new PtrRecyclerViewManager();
         }
-        return null;
+        throw new RuntimeException("only support listview and recyclerview");
     }
-
-
 }

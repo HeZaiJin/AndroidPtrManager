@@ -19,7 +19,7 @@ import com.haozhang.ptr.libary.base.PtrListeners;
  * @author HaoZhang
  * @date 2016/2/17.
  */
-public class PtrListViewManager extends PtrBaseManager implements AbsListView.OnScrollListener, AbsListView.OnItemClickListener {
+public class PtrListViewManager extends PtrBaseManager<PtrListViewManager> implements AbsListView.OnScrollListener, AbsListView.OnItemClickListener {
     private static final String TAG = "PtrListView";
 
     private static final int STATUS_PREPARED = 0;
@@ -91,13 +91,13 @@ public class PtrListViewManager extends PtrBaseManager implements AbsListView.On
     }
 
     @Override
-    public PtrBaseManager setHeaderView(View view) {
+    public PtrListViewManager setHeaderView(View view) {
 //        this.listView.addHeaderView(view);
         return this;
     }
 
     @Override
-    public PtrBaseManager setFooterView(IPtrBaseFooter view) {
+    public PtrListViewManager setFooterView(IPtrBaseFooter view) {
         footer = view;
         return this;
     }
@@ -112,7 +112,7 @@ public class PtrListViewManager extends PtrBaseManager implements AbsListView.On
     }
 
     @Override
-    public PtrBaseManager onLoadMorePrepare() {
+    public PtrListViewManager onLoadMorePrepare() {
         mStatus = STATUS_PREPARED;
 
         if (null!=onLoadMoreListener) {
@@ -126,7 +126,7 @@ public class PtrListViewManager extends PtrBaseManager implements AbsListView.On
     }
 
     @Override
-    public PtrBaseManager onLoadMoreBackground() {
+    public PtrListViewManager onLoadMoreBackground() {
         mStatus = STATUS_BACKGROUND;
 
         footer.onLoadMoreBackground();
@@ -139,7 +139,7 @@ public class PtrListViewManager extends PtrBaseManager implements AbsListView.On
     }
 
     @Override
-    public PtrBaseManager onLoadMoreCompleted() {
+    public PtrListViewManager onLoadMoreCompleted() {
         mStatus = STATUS_COMPLETED;
         if (null!=onLoadMoreListener) {
             onLoadMoreListener.onLoadMoreCompleted();
@@ -184,22 +184,22 @@ public class PtrListViewManager extends PtrBaseManager implements AbsListView.On
         }
     }
 
-    public PtrBaseManager setOnScrollListener(PtrListeners.OnScrollListener listener) {
+    public PtrListViewManager setOnScrollListener(PtrListeners.OnScrollListener listener) {
         this.onScrollListener = listener;
         return this;
     }
 
-    public PtrBaseManager setOnLoadMoreListener(PtrListeners.OnLoadMoreListener listener) {
+    public PtrListViewManager setOnLoadMoreListener(PtrListeners.OnLoadMoreListener listener) {
         this.onLoadMoreListener = listener;
         return this;
     }
 
-    public PtrBaseManager setOnPtrItemClickListener(PtrListeners.OnItemClickListener listener) {
+    public PtrListViewManager setOnPtrItemClickListener(PtrListeners.OnItemClickListener listener) {
         this.onItemClickListener = listener;
         return this;
     }
 
-    public PtrBaseManager setOnFootClickListener(PtrListeners.OnFootClickListener listener) {
+    public PtrListViewManager setOnFootClickListener(PtrListeners.OnFootClickListener listener) {
         this.onFootClickListener = listener;
         return this;
     }
