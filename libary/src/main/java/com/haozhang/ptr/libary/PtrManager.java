@@ -22,4 +22,5 @@ public class PtrManager<T extends PtrBaseManager>{
         }
         throw new RuntimeException("only support listview and recyclerview");
     }
+
 }
