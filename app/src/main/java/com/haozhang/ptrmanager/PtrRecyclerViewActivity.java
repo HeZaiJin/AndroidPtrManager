@@ -14,11 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.haozhang.ptr.libary.PtrManager;
+import com.haozhang.ptr.libary.base.PtrListeners;
+import com.haozhang.ptr.libary.manager.PtrRecyclerViewManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PtrRecyclerViewActivity extends AppCompatActivity {
-    private static final String TAG = "PtrRecyclerViewActivity";
+        private static final String TAG = "PtrRecyclerViewActivity";
     RecyclerView recyclerView;
     private List<Integer> list = new ArrayList<Integer>();
     int i = 0;
@@ -48,8 +52,35 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         adapter = new MyAdapter();
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL ));
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        new PtrManager<PtrRecyclerViewManager>().bind(recyclerView).setOnLoadMoreListener(new PtrListeners.OnLoadMoreListener() {
+            @Override
+            public void onLoadMorePrepared() {
+                Log.d(TAG, "onLoadMorePrepared() called with: ");
+
+            }
+
+            @Override
+            public void onLoadMoreBackground() {
+                Log.d(TAG, "onLoadMoreBackground() called with: ");
+                try {
+                    Thread.sleep(5000);
+                    int size = i + 10;
+                    for (; i < size; i++) {
+                        list.add(i);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onLoadMoreCompleted() {
+                Log.d(TAG, "onLoadMoreCompleted() called with: ");
+                adapter.notifyDataSetChanged();
+            }
+        });
+       /* recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -63,7 +94,7 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
 
                 Log.d(TAG, "last position = " + getLastVisiblePosition(recyclerView));
             }
-        });
+        });*/
 
 
 
