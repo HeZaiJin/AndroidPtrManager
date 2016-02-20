@@ -4,12 +4,26 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PtrRecyclerViewActivity extends AppCompatActivity {
+    private static final String TAG = "PtrRecyclerViewActivity";
     RecyclerView recyclerView;
+    private List<Integer> list = new ArrayList<Integer>();
+    int i = 0;
+    MyAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +40,101 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
             }
         });
 
+        for (; i < 40; i++) {
+            list.add(i);
+        }
+
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        adapter = new MyAdapter();
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL ));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Log.d(TAG, "onScrollStateChanged() called with: " + "recyclerView = [" + recyclerView + "], newState = [" + newState + "]");
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.d(TAG, "onScrolled() called with: " + "recyclerView = [" + recyclerView + "], dx = [" + dx + "], dy = [" + dy + "]");
+
+                Log.d(TAG, "last position = " + getLastVisiblePosition(recyclerView));
+            }
+        });
+
+
+
+    }
+
+    /**
+     * 获得最大的位置
+     *
+     * @param positions
+     * @return
+     */
+    private int getMaxPosition(int[] positions) {
+        int size = positions.length;
+        int maxPosition = Integer.MIN_VALUE;
+        for (int i = 0; i < size; i++) {
+            maxPosition = Math.max(maxPosition, positions[i]);
+        }
+        return maxPosition;
     }
 
 
+    /**
+     * 获取最后一条展示的位置
+     *
+     * @return
+     */
+    private int getLastVisiblePosition(RecyclerView view) {
+        int position;
+        if (view.getLayoutManager() instanceof LinearLayoutManager) {
+            position = ((LinearLayoutManager) view.getLayoutManager()).findLastVisibleItemPosition();
+        } else if (view.getLayoutManager() instanceof GridLayoutManager) {
+            position = ((GridLayoutManager) view.getLayoutManager()).findLastVisibleItemPosition();
+        } else if (view.getLayoutManager() instanceof StaggeredGridLayoutManager) {
+            StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) view.getLayoutManager();
+            int[] lastPositions = layoutManager.findLastVisibleItemPositions(new int[layoutManager.getSpanCount()]);
+            position = getMaxPosition(lastPositions);
+        } else {
+            position = view.getLayoutManager().getItemCount() - 1;
+        }
+        return position;
+    }
+
+    public class MyAdapter extends RecyclerView.Adapter<ViewHolder> {
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = View.inflate(PtrRecyclerViewActivity.this, R.layout.item_ptrlistview_demo, null);
+
+            ViewHolder holder = new ViewHolder(view);
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.tv.setText(String.valueOf(list.get(position)));
+        }
+
+        @Override
+        public int getItemCount() {
+            return list.size();
+        }
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tv;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            tv = (TextView) itemView.findViewById(R.id.test);
+
+        }
+
+    }
 }

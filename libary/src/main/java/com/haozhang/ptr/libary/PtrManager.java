@@ -18,7 +18,7 @@ public class PtrManager<T extends PtrBaseManager>{
         if (group instanceof ListView){
             return (T)new PtrListViewManager((ListView)group);
         }else if (group instanceof RecyclerView){
-            return (T)new PtrRecyclerViewManager();
+            return (T)new PtrRecyclerViewManager((RecyclerView)group);
         }
         throw new RuntimeException("only support listview and recyclerview");
     }

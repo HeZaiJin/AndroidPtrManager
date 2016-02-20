@@ -10,19 +10,11 @@ import com.haozhang.ptr.libary.PtrFootView;
  */
 public abstract class PtrBaseManager<T extends PtrBaseManager> {
 
-    /**
-     * 拓展scroll listener
-     */
-    protected PtrListeners.OnScrollListener onScrollListener;
 
-    /**
-     * 上拉加载的监听回调
-     */
-    protected PtrListeners.OnLoadMoreListener onLoadMoreListener;
-
-    protected PtrListeners.OnItemClickListener onItemClickListener;
-
-    protected PtrListeners.OnFootClickListener onFootClickListener;
+    public static final int STATUS_PREPARED = 0;
+    public static final int STATUS_BACKGROUND = 1;
+    public static final int STATUS_COMPLETED = -1;
+    public int mStatus = STATUS_PREPARED;
 
     public abstract T setHeaderView(View view);
 
@@ -33,14 +25,6 @@ public abstract class PtrBaseManager<T extends PtrBaseManager> {
     protected abstract T onLoadMoreBackground();
 
     protected abstract T onLoadMoreCompleted();
-
-    public abstract T setOnScrollListener(PtrListeners.OnScrollListener listener);
-
-    public abstract T setOnLoadMoreListener(PtrListeners.OnLoadMoreListener listener);
-
-    public abstract T setOnPtrItemClickListener(PtrListeners.OnItemClickListener listener);
-
-    public abstract T setOnFootClickListener(PtrListeners.OnFootClickListener listener);
 
     public abstract PtrFootView getMeterialFooterView();
 

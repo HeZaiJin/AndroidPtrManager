@@ -21,11 +21,19 @@ import com.haozhang.ptr.libary.base.PtrListeners;
  */
 public class PtrListViewManager extends PtrBaseManager<PtrListViewManager> implements AbsListView.OnScrollListener, AbsListView.OnItemClickListener {
     private static final String TAG = "PtrListView";
+    /**
+     * 拓展scroll listener
+     */
+    protected PtrListeners.OnScrollListener onScrollListener;
 
-    private static final int STATUS_PREPARED = 0;
-    private static final int STATUS_BACKGROUND = 1;
-    private static final int STATUS_COMPLETED = -1;
-    private int mStatus = STATUS_PREPARED;
+    /**
+     * 上拉加载的监听回调
+     */
+    protected PtrListeners.OnLoadMoreListener onLoadMoreListener;
+
+    protected PtrListeners.OnItemClickListener onItemClickListener;
+
+    protected PtrListeners.OnFootClickListener onFootClickListener;
 
     long lastScrollDate = 0;
     private Thread loadThread;
@@ -107,7 +115,7 @@ public class PtrListViewManager extends PtrBaseManager<PtrListViewManager> imple
         if (footer instanceof PtrFootView){
             return (PtrFootView) footer;
         }else {
-            throw new RuntimeException("footer view is not instanceof PtrFootView");
+            throw new RuntimeException("You have been setting your own footer");
         }
     }
 
