@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PtrRecyclerViewActivity extends AppCompatActivity {
-        private static final String TAG = "PtrRecyclerViewActivity";
+    private static final String TAG = "PtrRecyclerViewActivity";
     RecyclerView recyclerView;
     private List<Integer> list = new ArrayList<Integer>();
     int i = 0;
@@ -51,52 +51,37 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         adapter = new MyAdapter();
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        new PtrManager<PtrRecyclerViewManager>().bind(recyclerView).setOnLoadMoreListener(new PtrListeners.OnLoadMoreListener() {
-            @Override
-            public void onLoadMorePrepared() {
-                Log.d(TAG, "onLoadMorePrepared() called with: ");
+        new PtrManager<PtrRecyclerViewManager>()
+                .bind(recyclerView)
+                .setAdapter(adapter)
+                .setOnLoadMoreListener(new PtrListeners.OnLoadMoreListener() {
+                    @Override
+                    public void onLoadMorePrepared() {
+                        Log.d(TAG, "onLoadMorePrepared() called with: ");
 
-            }
-
-            @Override
-            public void onLoadMoreBackground() {
-                Log.d(TAG, "onLoadMoreBackground() called with: ");
-                try {
-                    Thread.sleep(5000);
-                    int size = i + 10;
-                    for (; i < size; i++) {
-                        list.add(i);
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            @Override
-            public void onLoadMoreCompleted() {
-                Log.d(TAG, "onLoadMoreCompleted() called with: ");
-                adapter.notifyDataSetChanged();
-            }
-        });
-       /* recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                Log.d(TAG, "onScrollStateChanged() called with: " + "recyclerView = [" + recyclerView + "], newState = [" + newState + "]");
-            }
+                    @Override
+                    public void onLoadMoreBackground() {
+                        Log.d(TAG, "onLoadMoreBackground() called with: ");
+                        try {
+                            Thread.sleep(5000);
+                            int size = i + 10;
+                            for (; i < size; i++) {
+                                list.add(i);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Log.d(TAG, "onScrolled() called with: " + "recyclerView = [" + recyclerView + "], dx = [" + dx + "], dy = [" + dy + "]");
-
-                Log.d(TAG, "last position = " + getLastVisiblePosition(recyclerView));
-            }
-        });*/
-
-
+                    @Override
+                    public void onLoadMoreCompleted() {
+                        Log.d(TAG, "onLoadMoreCompleted() called with: ");
+                        adapter.notifyDataSetChanged();
+                    }
+                });
 
     }
 

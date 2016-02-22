@@ -16,6 +16,9 @@ import com.haozhang.ptr.libary.base.PtrListeners;
 import com.haozhang.ptr.libary.listener.PtrRecyclerScrollListener;
 
 /**
+ * RecyclerView 加载更多的 manager .
+ * 你应该先bind，然后setadapter，然后setLoadMoreListener
+ *
  * @author HaoZhang
  * @date 2016/2/17.
  */
@@ -40,7 +43,6 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
         this.recyclerView = recyclerView;
         ptrRecyclerScrollListener = new PtrRecyclerScrollListener(this);
         initFooterView();
-        initAdapterManager();
         this.recyclerView.addOnScrollListener(ptrRecyclerScrollListener);
     }
 
@@ -49,8 +51,7 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
         footer.onGetContentView().setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
     }
 
-    private void initAdapterManager(){
-        RecyclerView.Adapter adapter = this.recyclerView.getAdapter();
+    private void initAdapterManager(RecyclerView.Adapter adapter){
         RecyclerView.LayoutManager layoutManager = this.recyclerView.getLayoutManager();
         if (null == adapter){
             throw new RuntimeException("The recyclerView's adapter is not set");
@@ -59,6 +60,7 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
             throw new RuntimeException("The recyclerView's layoutManager is not set");
         }
         adapterManager = new PtrRecyclerViewAdapterManager(adapter,layoutManager);
+        this.recyclerView.setAdapter(adapterManager.getAdapter());
     }
 
     /**
@@ -116,6 +118,10 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
 
     }
 
+    public PtrRecyclerViewManager setAdapter(RecyclerView.Adapter adapter){
+        initAdapterManager(adapter);
+        return this;
+    }
 
     @Override
     public PtrRecyclerViewManager setHeaderView(View view) {
@@ -124,6 +130,7 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
 
     @Override
     public PtrRecyclerViewManager setFooterView(IPtrBaseFooter view) {
+        this.footer = view ;
         return this;
     }
 

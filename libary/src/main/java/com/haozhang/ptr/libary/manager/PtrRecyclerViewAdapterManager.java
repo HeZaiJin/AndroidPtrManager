@@ -1,6 +1,5 @@
 package com.haozhang.ptr.libary.manager;
 
-import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -37,6 +36,8 @@ public class PtrRecyclerViewAdapterManager {
         }
         this.mLayoutManager = layoutManager;
     }
+
+
 
     private PtrRecyclerViewAdapterManager getInstance(){
         return PtrRecyclerViewAdapterManager.this;
