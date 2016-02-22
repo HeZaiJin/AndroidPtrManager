@@ -1,6 +1,7 @@
 package com.haozhang.ptr.libary;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -21,7 +22,7 @@ import com.haozhang.ptr.libary.design.MaterialProgressDrawable;
 public class PtrFootView extends LinearLayout implements IPtrBaseFooter {
 
     private static final int DEFAULT_PROGRESS_COLOR = 0Xff4caf50;
-    private static final int DEFAULT_WIDTH = 100;
+    private static final int DEFAULT_WIDTH = 50;
 
     private ImageView mRefreshView;
 
@@ -55,6 +56,7 @@ public class PtrFootView extends LinearLayout implements IPtrBaseFooter {
         mRefreshDrawable.setColorSchemeColors(mProgressColor);
         mRefreshView.setImageDrawable(mRefreshDrawable);
         this.addView(mRefreshView);
+        this.setBackgroundColor(Color.GRAY);
     }
 
     public void setProgressDrawableColor(int color){

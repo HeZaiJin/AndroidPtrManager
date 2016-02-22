@@ -35,6 +35,8 @@ public class PtrRecyclerViewAdapterManager {
                     new HeaderSapnSizeLookUp(mAdapter, ((GridLayoutManager) layoutManager).getSpanCount()));
         }
         this.mLayoutManager = layoutManager;
+
+        mAdapter.putLayoutManager(mLayoutManager);
     }
 
 

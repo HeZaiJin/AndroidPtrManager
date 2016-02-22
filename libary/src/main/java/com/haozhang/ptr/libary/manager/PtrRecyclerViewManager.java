@@ -2,6 +2,7 @@ package com.haozhang.ptr.libary.manager;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,16 +52,19 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
         footer.onGetContentView().setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
     }
 
-    private void initAdapterManager(RecyclerView.Adapter adapter){
+    private void initAdapterManager(@NonNull RecyclerView.Adapter adapter){
         RecyclerView.LayoutManager layoutManager = this.recyclerView.getLayoutManager();
-        if (null == adapter){
-            throw new RuntimeException("The recyclerView's adapter is not set");
-        }
         if (null == layoutManager){
             throw new RuntimeException("The recyclerView's layoutManager is not set");
         }
         adapterManager = new PtrRecyclerViewAdapterManager(adapter,layoutManager);
+        adapterManager.getAdapter().putLayoutManager(layoutManager);
         this.recyclerView.setAdapter(adapterManager.getAdapter());
+    }
+
+    public PtrRecyclerViewManager setLayoutManager(RecyclerView.LayoutManager manager){
+        this.recyclerView.setLayoutManager(manager);
+        return this;
     }
 
     /**

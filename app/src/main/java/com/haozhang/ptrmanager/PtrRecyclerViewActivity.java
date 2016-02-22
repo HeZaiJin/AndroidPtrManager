@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,6 +29,8 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
     private List<Integer> list = new ArrayList<Integer>();
     int i = 0;
     MyAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    PtrManager<PtrRecyclerViewManager> manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +47,23 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        layoutManager = new LinearLayoutManager(this);
+        manager = new PtrManager<PtrRecyclerViewManager>();
+        adapter = new MyAdapter();
+        reset(false);
 
+    }
+
+    public void reset(boolean refresh) {
+        list.clear();
+        i = 0;
         for (; i < 40; i++) {
             list.add(i);
         }
-
-
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        adapter = new MyAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        new PtrManager<PtrRecyclerViewManager>()
-                .bind(recyclerView)
+//        recyclerView.setLayoutManager(layoutManager);
+        manager.bind(recyclerView)
+                .setLayoutManager(layoutManager)
                 .setAdapter(adapter)
                 .setOnLoadMoreListener(new PtrListeners.OnLoadMoreListener() {
                     @Override
@@ -82,6 +92,10 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                     }
                 });
+
+        if (refresh) {
+            adapter.notifyDataSetChanged();
+        }
 
     }
 
@@ -152,5 +166,37 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.recycler_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        RecyclerView.LayoutManager manager = null;
+        switch (id) {
+            case R.id.action_linearlayout:
+                manager = new LinearLayoutManager(this);
+                break;
+            case R.id.action_gridlayout:
+                manager = new GridLayoutManager(this, 2);
+                break;
+            case R.id.action_staggered:
+                manager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                break;
+        }
+        this.layoutManager = manager;
+        reset(true);
+        return super.onOptionsItemSelected(item);
     }
 }

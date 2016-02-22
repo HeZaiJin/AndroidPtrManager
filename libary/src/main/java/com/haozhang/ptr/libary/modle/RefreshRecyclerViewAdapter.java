@@ -63,6 +63,7 @@ public class RefreshRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             }
             mAdapter = adapter;
             mAdapter.registerAdapterDataObserver(mDataObserver);
+
             notifyItemRangeInserted(getHeadersCount(), mAdapter.getItemCount());
         }
     }
@@ -108,7 +109,7 @@ public class RefreshRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public boolean removeFooter(View v) {
         if (mFooterViews.contains(v)) {
             mFooterViews.remove(v);
-            notifyItemRemoved(getItemCount() - 1);
+            notifyDataSetChanged();
             return true;
         }
         return false;
@@ -208,20 +209,44 @@ public class RefreshRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     });
                 }
             } else {
-                if (null != mLayoutManager && mLayoutManager instanceof StaggeredGridLayoutManager) {
-                    StaggeredGridLayoutManager.LayoutParams params = new StaggeredGridLayoutManager.LayoutParams(
-                            StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT,
-                            StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT);
-                    params.setFullSpan(true);
-                    holder.itemView.setLayoutParams(params);
-                }
-//                ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-//                if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
-//                    ((StaggeredGridLayoutManager.LayoutParams) layoutParams).setFullSpan(true);
+//                if (null != mLayoutManager && mLayoutManager instanceof StaggeredGridLayoutManager) {
+//                    StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+//                    params.width = StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT;
+//                    params.height = StaggeredGridLayoutManager.LayoutParams.WRAP_CONTENT;
+//                    params.setFullSpan(true);
+//                    Log.d("bindview","setFullSpan");
+//                    holder.itemView.setLayoutParams(params);
 //                }
+                ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+                if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
+                    ((StaggeredGridLayoutManager.LayoutParams) layoutParams).setFullSpan(true);
+                }
             }
         }
     }
+
+   /* @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        if (isStaggeredGridLayout(holder)) {
+            handleLayoutIfStaggeredGridLayout(holder, holder.getLayoutPosition());
+        }
+    }
+
+    private boolean isStaggeredGridLayout(RecyclerView.ViewHolder holder) {
+        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+        if (layoutParams != null && layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
+            return true;
+        }
+        return false;
+    }
+
+    protected void handleLayoutIfStaggeredGridLayout(RecyclerView.ViewHolder holder, int position) {
+        if (isHeader(position) || isFooter(position)) {
+            StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            p.setFullSpan(true);
+        }
+    }*/
 
     /**
      * @return headerView's counts
@@ -288,6 +313,7 @@ public class RefreshRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         if (null != v) {
             if (!mFooterViews.contains(v)) {
                 mFooterViews.add(v);
+//                notifyItemInserted(getItemCount());
                 notifyDataSetChanged();
             }
         }
