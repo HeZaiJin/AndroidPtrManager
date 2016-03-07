@@ -18,23 +18,27 @@
         android:id="@+id/ptrlistview"
         style="@style/Entry_Button_Style"
         android:text="PtrListViewManager"
+        app:v_styleId="@array/button_flat_color"
         />
 
     <com.rey.material.widget.Button
         android:id="@+id/ptrrecycler"
         android:text="PtrRecyclerViewManager"
         style="@style/Entry_Button_Style"
+        app:v_styleId="@array/button_flat_color"
         />
 
     <com.rey.material.widget.Button
         android:id="@+id/recyclerviewadapter"
         style="@style/Entry_Button_Style"
         android:text="RecyclerView Adapter"
+        app:v_styleId="@array/button_flat_color"
          />
 
     <com.rey.material.widget.Button
         android:id="@+id/test"
         style="@style/Entry_Button_Style"
+        app:v_styleId="@array/button_flat_color"
         android:text="Test"
          />
 
