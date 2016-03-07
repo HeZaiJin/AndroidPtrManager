@@ -41,6 +41,19 @@ public class EntryActivity extends AppCompatActivity {
                 startActivity(new Intent(EntryActivity.this,PtrRecyclerViewActivity.class));
             }
         });
+
+        findViewById(R.id.recyclerviewadapter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(EntryActivity.this,MainActivity.class));
+            }
+        });
+        findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(EntryActivity.this,TestActivity.class));
+            }
+        });
     }
 
     @Override

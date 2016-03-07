@@ -1,9 +1,9 @@
 package com.haozhang.ptr.libary;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -22,7 +22,10 @@ import com.haozhang.ptr.libary.design.MaterialProgressDrawable;
 public class PtrFootView extends LinearLayout implements IPtrBaseFooter {
 
     private static final int DEFAULT_PROGRESS_COLOR = 0Xff4caf50;
-    private static final int DEFAULT_WIDTH = 50;
+    private static final int DEFAULT_WIDTH = 80;
+    private static final int CIRCLE_BG_LIGHT = 0xFFFAFAFA;
+    private static final int DEFAULT_CIRCLE_TARGET = 64;
+    private static final int CIRCLE_DIAMETER = 40;
 
     private ImageView mRefreshView;
 
@@ -46,17 +49,20 @@ public class PtrFootView extends LinearLayout implements IPtrBaseFooter {
         onInitView(context);
     }
 
+
+
     public void onInitView(Context context){
         this.setGravity(Gravity.CENTER);
-        mRefreshView = new ImageView(context);
-        mRefreshView.setLayoutParams(new LayoutParams(mWidth ,mWidth));
-
-        mRefreshDrawable = new MaterialProgressDrawable(context,this);
+        mRefreshView =new ImageView(context);
+        mRefreshView.setLayoutParams(new LayoutParams(mWidth, mWidth));
+        this.addView(mRefreshView);
+        mRefreshDrawable = new MaterialProgressDrawable(context,mRefreshView);
         mRefreshDrawable.setAlpha(255);
+        mRefreshDrawable.showArrow(false);
+//        mRefreshDrawable.setStartEndTrim(0,0.8f);
         mRefreshDrawable.setColorSchemeColors(mProgressColor);
         mRefreshView.setImageDrawable(mRefreshDrawable);
-        this.addView(mRefreshView);
-        this.setBackgroundColor(Color.GRAY);
+//        this.setBackgroundColor(Color.GRAY);
     }
 
     public void setProgressDrawableColor(int color){
@@ -90,16 +96,18 @@ public class PtrFootView extends LinearLayout implements IPtrBaseFooter {
 
     @Override
     public void onLoadMorePrepare() {
-
-    }
-
-    @Override
-    public void onLoadMoreBackground() {
+        Log.d("PtrFoot","onLoadMorePrepare callback");
         mRefreshDrawable.start();
     }
 
     @Override
+    public void onLoadMoreBackground() {
+        Log.d("PtrFoot","onLoadMoreBackground callback");
+    }
+
+    @Override
     public void onLoadMoreCompleted() {
+        Log.d("PtrFoot","onLoadMoreCompleted callback");
         mRefreshDrawable.stop();
     }
 }

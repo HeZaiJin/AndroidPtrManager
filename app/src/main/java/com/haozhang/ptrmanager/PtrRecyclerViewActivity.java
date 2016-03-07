@@ -1,5 +1,6 @@
 package com.haozhang.ptrmanager;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,14 +10,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.haozhang.ptr.libary.PtrFootView;
 import com.haozhang.ptr.libary.PtrManager;
+import com.haozhang.ptr.libary.base.IPtrBaseFooter;
 import com.haozhang.ptr.libary.base.PtrListeners;
 import com.haozhang.ptr.libary.manager.PtrRecyclerViewManager;
 
@@ -61,8 +66,13 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
         for (; i < 40; i++) {
             list.add(i);
         }
+//        ProgressWheel wheel = (ProgressWheel) getLayoutInflater().inflate(R.layout.activity_test,null).findViewById(R.id.progress);
+        PtrFootView footView = new PtrFootView(this);
+        ProgressBar bar = new ProgressBar(this);
+        FooterProgressBar footer = (FooterProgressBar) getLayoutInflater().inflate(R.layout.progress_bar_footer,null).findViewById(R.id.footerProgress);
 //        recyclerView.setLayoutManager(layoutManager);
         manager.bind(recyclerView)
+                .setFooterView(footer)
                 .setLayoutManager(layoutManager)
                 .setAdapter(adapter)
                 .setOnLoadMoreListener(new PtrListeners.OnLoadMoreListener() {
@@ -77,7 +87,7 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
                         Log.d(TAG, "onLoadMoreBackground() called with: ");
                         try {
                             Thread.sleep(5000);
-                            int size = i + 10;
+                            int size = i + 5;
                             for (; i < size; i++) {
                                 list.add(i);
                             }
@@ -95,6 +105,42 @@ public class PtrRecyclerViewActivity extends AppCompatActivity {
 
         if (refresh) {
             adapter.notifyDataSetChanged();
+        }
+
+    }
+
+    public class FooterProgressBar extends ProgressBar implements IPtrBaseFooter{
+
+        public FooterProgressBar(Context context) {
+            this(context,null);
+        }
+
+        public FooterProgressBar(Context context, AttributeSet attrs) {
+            this(context, attrs,0);
+        }
+
+        public FooterProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+        }
+
+        @Override
+        public View onGetContentView() {
+            return this;
+        }
+
+        @Override
+        public void onLoadMorePrepare() {
+
+        }
+
+        @Override
+        public void onLoadMoreBackground() {
+
+        }
+
+        @Override
+        public void onLoadMoreCompleted() {
+
         }
 
     }

@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 
@@ -59,7 +60,10 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
         }
         adapterManager = new PtrRecyclerViewAdapterManager(adapter,layoutManager);
         adapterManager.getAdapter().putLayoutManager(layoutManager);
+
+
         this.recyclerView.setAdapter(adapterManager.getAdapter());
+        adapterManager.addFooterView(footer.onGetContentView());
     }
 
     public PtrRecyclerViewManager setLayoutManager(RecyclerView.LayoutManager manager){
@@ -111,6 +115,7 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
             int count = recyclerView.getAdapter().getItemCount();
             int lastVisiblePosition = getLastVisiblePosition(recyclerView);
             if (count == (lastVisiblePosition + 1)){
+                Log.d("onScrolled","scroll to last position ready to loadmore");
                 onLoadMorePrepare();
                 onLoadMoreBackground();
             }
@@ -154,7 +159,7 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
 
         footer.onLoadMorePrepare();
 
-        adapterManager.addFooterView(footer.onGetContentView());
+//        adapterManager.addFooterView(footer.onGetContentView());
 
         return this;
     }
@@ -212,7 +217,7 @@ public class PtrRecyclerViewManager extends PtrBaseManager<PtrRecyclerViewManage
         }
         footer.onLoadMoreCompleted();
 
-        adapterManager.removeFooterView(footer.onGetContentView());
+//        adapterManager.removeFooterView(footer.onGetContentView());
 
         mStatus = STATUS_PREPARED;
 

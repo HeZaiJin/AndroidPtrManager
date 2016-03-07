@@ -10,7 +10,6 @@ package com.haozhang.ptr.libary.modle;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -161,7 +160,6 @@ public class RefreshRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (!mFooterViewTypes.contains(mFooterViewType)) {
                     mFooterViewTypes.add(mFooterViewType);
                 }
-                Log.d("Adapter", "add mFooterViewTypes item type = " + mFooterViewType + ", position =" + position + ",size = " + mFooterViewTypes.size());
 
                 return mFooterViewType;
             }
